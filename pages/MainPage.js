@@ -1,19 +1,55 @@
 import {StatusBar} from 'expo-status-bar';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet,Text,View,Dimensions,ScrollView,TouchableOpacity,Image} from 'react-native';
 import data from '../data.json'
+
+import Card from '../components/Card'
+import Loading from '../components/Loading'
+
+// test
+import axios from 'axios';
+// test
 
 const windowWidth = Dimensions.get('window').width ;
 export default function MainPage() {
     console.disableYellowBox = true;
 
+    const [state, setState] = useState([]);
+    // 1 컴포넌트, n 스테이트 가능. 이름은 내마음
+    // const [statename, setStatename] = useState(초기값);
+    // 여기서 초기값은 [리스트, trueFalse, 딕셔너리, 숫자, 문자] 다 가능
+    const [ready, setReady] = useState(true);
+    const [cateState, setCateState] = useState([])
+
+    useEffect(() => {
+        setTimeout(()=> {
+            let tip = data.tip;
+            setState(tip);
+            setCateState(tip);
+            setReady(false);
+        }, 1000)
+    }, [])
+
+    const category = (cate) => {
+        if (cate == '전체보기') {
+            // 전체보기라면, 원래 데이터를 담고 있는 상태값으로 초기화
+            // state는 초기값을 가지고 있는 상태이기 때문에
+            setCateState(state);
+        } else {
+            setCateState(state.filter((val) => val.category == cate))
+        }
+    }
+    const a1 = () => {
+        alert('h1')
+    }
+
+
     const url = 'https://firebasestorage.googleapis.com/v0/b/sparta-image.appspot.com/o/lecture%2Fmain.png?alt=media&token=8e5eb78d-19ee-4359-9209-347d125b322c'
     const urlPizza = 'https://firebasestorage.googleapis.com/v0/b/sparta-image.appspot.com/o/lecture%2Fpizza.png?alt=media&token=1a099927-d818-45d4-b48a-7906fd0d2ad3'
-    const tip = data.tip;
     let todayWeather = 27;
     let todayCondition = '흐림'
 
-    return (
+    return ready ? <Loading/> : (
       <View>
         <ScrollView>
               <View style={styles.container}>
@@ -25,42 +61,28 @@ export default function MainPage() {
                 </View>
                 <ScrollView horizontal={true} indicatorStyle={'white'}>
                     <View style={[styles.slider, styles.b]}>
-                        <TouchableOpacity style={[styles.sliderBox, styles.yellow]}>
-                            <Text style={styles.sliderText}>미용</Text>
+                        <TouchableOpacity style={[styles.sliderBox, styles.deeppink]}onPress={()=>{a1()}}>
+                            <Text style={styles.sliderText}>전체보기</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.sliderBox, styles.coral]}>
+                        <TouchableOpacity style={[styles.sliderBox, styles.yellow]}onPress={()=>{category('생활')}}>
+                            <Text style={styles.sliderText}>생활</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.sliderBox, styles.coral]}onPress={()=>{category('재테크')}}>
                             <Text style={styles.sliderText}>재테크</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.sliderBox, styles.green]}>
-                            <Text style={styles.sliderText}>할인</Text>
+                        <TouchableOpacity style={[styles.sliderBox, styles.green]}onPress={()=>{category('반려견')}}>
+                            <Text style={styles.sliderText}>반려견</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.sliderBox, styles.purple]}>
-                            <Text style={styles.sliderText}>뭐시기</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.sliderBox]}>
-                            <Text style={styles.sliderText}>팁1</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.sliderBox]}>
-                            <Text style={styles.sliderText}>팁2</Text>
+                        <TouchableOpacity style={[styles.sliderBox, styles.purple]}onPress={()=>{category('꿀팁 찜')}}>
+                            <Text style={styles.sliderText}>꿀팁 찜</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
                 <View style={[styles.cards, styles.b]}>
                 {
-                  tip.map((val, i) => {
-                    return (
-                    <TouchableOpacity style={[styles.b]}>
-                        <View style={styles.card} key={i}>
-                            <View style={styles.cardImage}>
-                                <Image style={styles.cardImage} source={{uri: val.image}}></Image>
-                            </View>
-                            <View style={styles.desc}>
-                              <Text style={styles.descTitle} numberOfLines={1}>{val.title}</Text>
-                              <Text style={styles.descdesc} numberOfLines={3}>{val.desc}</Text>
-                              <Text style={styles.descDate}>{val.date}</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                  cateState.map((val, i) => {
+                      return (
+                        <Card content={val} key={i}/>
                     )
                   })
                 }
@@ -120,10 +142,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fe8d6f'
     },
     green: {
-        backgroundColor: '#fe8d6f'
+        backgroundColor: '#9adbc5'
     },
     purple: {
         backgroundColor: '#f886a8'
+    },
+    deeppink: {
+        backgroundColor: "deeppink"
     },
     sliderText: {
         fontSize: 17,
@@ -132,37 +157,7 @@ const styles = StyleSheet.create({
     cards: {
         width: '100%'
     },
-    card: {
-        width: '100%',
-        height: 120,
-        flexDirection: 'row',
-        marginBottom: 25,
-    },
-    cardImage: {
-        flex: 1,
-        borderRadius: 15,
-        marginRight: 5,
-    },
-    desc: {
-        flex: 2,
-        flexDirection: 'column'
-    },
-    descTitle: {
-      flex: 1,
-      fontSize: 24,
-      fontWeight: 'bold',
-      paddingBottom: 10,
-    },
-    descdesc: {
-      flex:3,
-      fontSize: 16,
-      width: '100%',
-    },
-    descDate: {
-      flex: 1,
-      fontSize: 10,
-      color: 'gray'
-    },
+    
 
     b: {
         // borderWidth: 1,
