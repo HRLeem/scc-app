@@ -1,10 +1,18 @@
 import React from 'react';
-import MainPage from './pages/MainPage';
-import AboutPage from './pages/AboutPage';
-import DetailPage from './pages/DetailPage'
+import { StatusBar } from 'expo-status-bar'
+
+// 네비게이션 도구
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigator from './navigation/StackNavigator'
 
 export default function App() {
-    return (<MainPage/>)
-    // return (<AboutPage/>)
-    // return (<DetailPage/>)
+    
+    console.disableYellowbox = true;
+
+    return (
+        <NavigationContainer>
+            <StatusBar style="black" />
+            <StackNavigator/>
+        </NavigationContainer>
+    )
 }

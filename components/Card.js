@@ -2,9 +2,9 @@ import StatusBar from 'expo-status-bar'
 import React from 'react'
 import {StyleSheet, Text, Image, View, TouchableOpacity} from 'react-native'
 
-export default function Card({content}) {
+export default function Card({content, navigation}) {
     return (
-        <TouchableOpacity style={[styles.b]}>
+        <TouchableOpacity style={[styles.b]} onPress={()=>{navigation.navigate('DetailPage', content.idx)}}>
                         <View style={styles.card} >
                             <View style={styles.cardImage}>
                                 <Image style={styles.cardImage} source={{uri: content.image}}></Image>
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
         height: 120,
         flexDirection: 'row',
         marginBottom: 25,
+        paddingBottom: 5,
+        borderBottomColor: '#ddd',
+        borderBottomWidth: 1,
     },
     cardImage: {
         flex: 1,
