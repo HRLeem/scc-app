@@ -1,21 +1,24 @@
 import StatusBar from 'expo-status-bar'
 import React from 'react'
-import {StyleSheet, Text, Image, View, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, Image, View, TouchableOpacity, Touchable} from 'react-native'
 
 export default function Card({content, navigation}) {
+ 
     return (
-        <TouchableOpacity style={[styles.b]} onPress={()=>{navigation.navigate('DetailPage', content.idx)}}>
-                        <View style={styles.card} >
-                            <View style={styles.cardImage}>
-                                <Image style={styles.cardImage} source={{uri: content.image}}></Image>
-                            </View>
-                            <View style={styles.desc}>
-                              <Text style={styles.descTitle} numberOfLines={1}>{content.title}</Text>
-                              <Text style={styles.descdesc} numberOfLines={3}>{content.desc}</Text>
-                              <Text style={styles.descDate}>{content.date}</Text>
-                            </View>
-                        </View>
-        </TouchableOpacity>
+      <View style={styles.borderTop}>
+          <View style={[styles.b]}>
+            <TouchableOpacity style={styles.card}  onPress={()=>{navigation.navigate('DetailPage', content.idx)}}>
+              <View style={styles.cardImage}>
+                <Image style={styles.cardImage} source={{uri: content.image}}></Image>
+              </View>
+              <TouchableOpacity style={styles.desc} onPress={()=>{navigation.navigate('DetailPage', content.idx)}}>
+                <Text style={styles.descTitle} numberOfLines={1}>{content.title}</Text>
+                <Text style={styles.descdesc} numberOfLines={3}>{content.desc}</Text>
+                <Text style={styles.descDate}>{content.date}</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
+        </View>
     )
 }
 
@@ -24,10 +27,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 120,
         flexDirection: 'row',
-        marginBottom: 25,
+        marginTop: 25,
         paddingBottom: 5,
-        borderBottomColor: '#ddd',
-        borderBottomWidth: 1,
+    },
+    borderTop: {
+
+      borderTopColor: '#ddd',
+      borderTopWidth: 1,
     },
     cardImage: {
         flex: 1,

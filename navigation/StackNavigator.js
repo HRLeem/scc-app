@@ -1,16 +1,30 @@
 import React from 'react';
 // 설치한 스택 네이게이션 라이브러리를 가져옵니다
 import { createStackNavigator } from '@react-navigation/stack'
+// // Test
+// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+// // TestEND
 
 // 페이지로 만든 컴포넌트들을 불러옵니다
-import DetailPage from '../pages/DetailPage';
+// import TabNavigator from './TabNavigator';
 import MainPage from '../pages/MainPage';
+import DetailPage from '../pages/DetailPage';
 import AboutPage from '../pages/AboutPage';
 import ZzimPage from '../pages/ZzimPage';
 
 // 스택 네비게이션 라이브러리가 제공해주는 여러 가능이 담겨있는 객체를 사용
 // 그래서 이렇게 항상 상단에 선언하고 시작하는 것이 규칙
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+// const Home = () => {
+//     return (
+//         <Tab.Navigator>
+//             <Tab.Screen name="MainPage" component={MainPage} />
+//             <Tab.Screen name="ZzimPage" component={ZzimPage} />
+//         </Tab.Navigator>
+//     );
+// }
 
 const StackNavigator = () => {
     return (
@@ -32,8 +46,9 @@ const StackNavigator = () => {
             }}
         >
             {/* 컴포넌트를 페이지로 만들어주는 엘리먼트를 """끼워 넣습니다.""" 이 자체로 이제 페이지 기능을 합니다. */}
-            <Stack.Screen name="ZzimPage" component={ZzimPage}/>
+            {/* <Stack.Screen name="Home" components={Home} options={{ headerShown: false }}/> */}
             <Stack.Screen name="MainPage" component={MainPage}/>
+            <Stack.Screen name="ZzimPage" component={ZzimPage}/>
             <Stack.Screen name="DetailPage" component={DetailPage}/>
             <Stack.Screen name="AboutPage" component={AboutPage}/>
         </Stack.Navigator>

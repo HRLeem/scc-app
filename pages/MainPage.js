@@ -122,7 +122,7 @@ export default function MainPage( {navigation, route} ) {
                 {
                   cateState.map((val, i) => {
                       return (
-                        <Card content={val} key={i} navigation={navigation}/>
+                        <Card content={val} key={i} navigation={navigation} isZzim={false}/>
                     )
                   })
                 }
